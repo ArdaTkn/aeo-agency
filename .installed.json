@@ -1,0 +1,77 @@
+{
+  "framework": "ai-employees",
+  "version": "1.0.0",
+  "agency_name": "AEO Vanguard Agency",
+  "agency_type": "Answer Engine Optimization (AEO)",
+  "installed_at": "2026-10-29T10:00:00Z",
+  "installed_employees": [
+    {
+      "id": "emp_01",
+      "name": "Project Manager",
+      "role": "Chief of Staff & Client Onboarding Lead",
+      "status": "active",
+      "capabilities": ["audit_ledger", "client_contracts", "dispatch_bulletin"]
+    },
+    {
+      "id": "emp_02",
+      "name": "Lead LLM Researcher",
+      "role": "Synthetic Query & Citation Scout",
+      "status": "active",
+      "capabilities": ["synthetic_prompts", "perplexity_crawl", "citation_mapping"]
+    },
+    {
+      "id": "emp_03",
+      "name": "Knowledge Architect",
+      "role": "Information Gain & Citation Bait Creator",
+      "status": "active",
+      "capabilities": ["llms_txt_generation", "faq_schemas", "comparison_matrices"]
+    },
+    {
+      "id": "emp_04",
+      "name": "SoM Performance Analyst",
+      "role": "Share of Model Tracker & Risk Guard",
+      "status": "active",
+      "capabilities": ["som_calculation", "hallucination_detection", "sentiment_scoring"]
+    },
+    {
+      "id": "emp_05",
+      "name": "Consensus Builder",
+      "role": "Digital PR & Consensus Engine",
+      "status": "active",
+      "capabilities": ["reddit_distribution", "github_benchmarks", "quora_authorities"]
+    },
+    {
+      "id": "emp_06",
+      "name": "Technical AEO Auditor",
+      "role": "Crawlability & Schema Architect",
+      "status": "active",
+      "capabilities": ["schema_injection", "robots_txt_audit", "semantic_html_checks"]
+    },
+    {
+      "id": "emp_07",
+      "name": "Solution Engineer",
+      "role": "Client Success & Technical Implementation",
+      "status": "active",
+      "capabilities": ["cms_webhook_integration", "wordpress_sync", "webflow_sync"]
+    },
+    {
+      "id": "emp_08",
+      "name": "Outbound Growth Lead",
+      "role": "Outbound Marketing & Deal Initiator",
+      "status": "active",
+      "capabilities": ["prospect_scanning", "zero_visibility_audits", "cold_outreach"]
+    }
+  ],
+  "automation_bridges": {
+    "google_sheet_ledger": {
+      "enabled": true,
+      "columns": ["Timestamp", "Agent Name", "Task Performed", "Output Status"],
+      "webhook_endpoint": "https://script.google.com/macros/s/AKfycbxa1x4HmY_3yuxjz71gO8J9xg5G8mIoBIAqd6UKzr6qENkBFlUaKf-b8pgMgdvGqa6Q/exec"
+    },
+    "email_reporting_node": {
+      "enabled": true,
+      "delivery_channel": "Google Apps Script MailApp API",
+      "schedule": "Daily Executive Cycle Completion"
+    }
+  }
+}
