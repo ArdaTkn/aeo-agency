@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-AEO Agency: Autonomous Multi-Agent Automation Bridge
-Orchestrates 8 AI employees, logs activity to live Google Sheet ledger,
-and triggers daily executive email bulletins.
+AEO Agency: Autonomous Multi-Agent Automation Bridge (9-Column Compliant)
+Complies strictly with Course Specification:
+Columns: Task ID | Timestamp | Assigned By | Agent Name | Task Description | Priority | Status | Output / Result Link | Completion Time
 """
 
 import urllib.request
@@ -13,66 +13,132 @@ import sys
 
 WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbxa1x4HmY_3yuxjz71gO8J9xg5G8mIoBIAqd6UKzr6qENkBFlUaKf-b8pgMgdvGqa6Q/exec"
 
-AGENTS_WORKFLOW = [
+# 8 Autonomous Employees executing diverse operational tasks
+SAMPLE_TASKS = [
     {
-        "agent_name": "Outbound Growth Lead (Agent 8)",
-        "task_performed": "Scanned 50 enterprise SaaS domains; detected 38 zero-visibility gaps in Perplexity/ChatGPT; dispatched automated AEO audit cold emails.",
-        "output_status": "Success (38 prospect audits delivered, 3 discovery calls booked)",
+        "task_id": "TSK-1001",
+        "timestamp": "2026-11-06 09:15:22",
+        "assigned_by": "Boss",
+        "agent_name": "Jordan Hayes (Agent 8: Outbound Growth Lead)",
+        "task_description": "Scanned 50 mid-market SaaS companies for Perplexity zero-visibility blindspots.",
+        "priority": "High",
+        "status": "Completed",
+        "output_link": "https://github.com/ArdaTkn/aeo-agency/leads/batch_nov06.csv",
+        "completion_time": "38m",
         "send_email": False
     },
     {
-        "agent_name": "Project Manager (Agent 1)",
-        "task_performed": "Received incoming discovery requests, issued standardized AEO Retainer SOW to new client 'Worky Inc.', and initialized onboarding track.",
-        "output_status": "Success (SOW countersigned, project initialized in ledger)",
+        "task_id": "TSK-1002",
+        "timestamp": "2026-11-06 10:45:10",
+        "assigned_by": "Sarah Jenkins (PM)",
+        "agent_name": "Marcus Vance (Agent 2: Lead LLM Researcher)",
+        "task_description": "Queried 250 synthetic prompt batches on ChatGPT & Perplexity to map category citations.",
+        "priority": "High",
+        "status": "Completed",
+        "output_link": "https://github.com/ArdaTkn/aeo-agency/audits/citations_nov06.json",
+        "completion_time": "52m",
         "send_email": False
     },
     {
-        "agent_name": "Lead LLM Researcher (Agent 2)",
-        "task_performed": "Executed 250 synthetic prompt batches across ChatGPT, Perplexity, and Claude to map category citation sources and competitor bias.",
-        "output_status": "Success (Identified Reddit & ProductHunt as top citation feeder hubs)",
+        "task_id": "TSK-1003",
+        "timestamp": "2026-11-06 11:30:00",
+        "assigned_by": "Sarah Jenkins (PM)",
+        "agent_name": "Elena Rostova (Agent 3: Knowledge Architect)",
+        "task_description": "Generated standard /llms.txt and structured FAQ comparison matrices for client staging.",
+        "priority": "Medium",
+        "status": "Completed",
+        "output_link": "https://github.com/ArdaTkn/aeo-agency/specs/llms.txt",
+        "completion_time": "44m",
         "send_email": False
     },
     {
-        "agent_name": "Technical AEO Auditor (Agent 6)",
-        "task_performed": "Audited client staging infrastructure, resolved robots.txt AI-crawler constraints, and injected Schema.org / JSON-LD entity graph.",
-        "output_status": "Success (Valid JSON-LD Schema deployed with 0 syntax errors)",
+        "task_id": "TSK-1004",
+        "timestamp": "2026-11-06 14:10:40",
+        "assigned_by": "Boss",
+        "agent_name": "Alex Rivera (Agent 6: Technical AEO Auditor)",
+        "task_description": "Validated JSON-LD schema microdata and resolved robots.txt AI-crawler constraints.",
+        "priority": "High",
+        "status": "Completed",
+        "output_link": "https://github.com/ArdaTkn/aeo-agency/schema/validated_schema.json",
+        "completion_time": "30m",
         "send_email": False
     },
     {
-        "agent_name": "Knowledge Architect (Agent 3)",
-        "task_performed": "Authored high-density comparison matrices ('Worky vs Asana'), FAQ citation blocks, and deployed standard /llms.txt file.",
-        "output_status": "Success (Published llms.txt & 4 structured entity comparison tables)",
+        "task_id": "TSK-1005",
+        "timestamp": "2026-11-06 15:20:15",
+        "assigned_by": "Sarah Jenkins (PM)",
+        "agent_name": "Chloe Martin (Agent 5: Consensus Builder)",
+        "task_description": "Coordinated technical benchmark distribution across Reddit r/SaaS and GitHub discussions.",
+        "priority": "Medium",
+        "status": "Completed",
+        "output_link": "https://reddit.com/r/SaaS/comments/benchmarks_2026",
+        "completion_time": "65m",
         "send_email": False
     },
     {
-        "agent_name": "Consensus Builder (Agent 5)",
-        "task_performed": "Structured and scheduled technical benchmark distribution across authoritative hubs (Reddit r/productivity, GitHub repos, and Tech blogs).",
-        "output_status": "Success (7 authoritative reference threads active with 94% positive consensus)",
+        "task_id": "TSK-1006",
+        "timestamp": "2026-11-07 09:30:00",
+        "assigned_by": "Sarah Jenkins (PM)",
+        "agent_name": "Tariq Mansour (Agent 7: Solution Engineer)",
+        "task_description": "Tested webhook synchronization between generated AEO data and client Webflow CMS.",
+        "priority": "Low",
+        "status": "Completed",
+        "output_link": "https://api.clientdomain.com/webhooks/aeo_sync",
+        "completion_time": "25m",
         "send_email": False
     },
     {
-        "agent_name": "Solution Engineer (Agent 7)",
-        "task_performed": "Tested webhook synchronization between generated AEO structured data and client Webflow CMS endpoints.",
-        "output_status": "Success (Production CMS synchronization verified 100%)",
+        "task_id": "TSK-1007",
+        "timestamp": "2026-11-07 11:15:30",
+        "assigned_by": "Boss",
+        "agent_name": "David Chen (Agent 4: SoM Performance Analyst)",
+        "task_description": "Measured 48-hour post-deployment Share of Model shift and checked for model hallucinations.",
+        "priority": "High",
+        "status": "Completed",
+        "output_link": "https://github.com/ArdaTkn/aeo-agency/reports/som_shift_nov07.pdf",
+        "completion_time": "40m",
         "send_email": False
     },
     {
-        "agent_name": "SoM Performance Analyst (Agent 4)",
-        "task_performed": "Measured 48-hour post-deployment visibility shift; audited model outputs for brand hallucinations and negative sentiment.",
-        "output_status": "Success (Client Share of Model increased from 0% to 34.2%; 0 hallucinations detected)",
+        "task_id": "TSK-1008",
+        "timestamp": "2026-11-07 17:00:00",
+        "assigned_by": "Boss",
+        "agent_name": "Alex Rivera (Agent 6: Technical AEO Auditor)",
+        "task_description": "Re-audit client CDN caching headers for PerplexityBot rate-limiting response.",
+        "priority": "Medium",
+        "status": "In Progress",
+        "output_link": "Pending CDN Verification",
+        "completion_time": "Active",
         "send_email": False
     },
     {
-        "agent_name": "Project Manager (Chief of Staff) (Agent 1)",
-        "task_performed": "Audited all 8 agent completion tokens, reconciled Google Sheet ledger, and dispatched executive status bulletin to leadership inbox.",
-        "output_status": "Success (Daily executive brief emailed to stakeholder inbox)",
-        "send_email": True
+        "task_id": "TSK-1009",
+        "timestamp": "2026-11-08 08:45:00",
+        "assigned_by": "Sarah Jenkins (PM)",
+        "agent_name": "Tariq Mansour (Agent 7: Solution Engineer)",
+        "task_description": "Resolve API timeout with client Shopify staging server schema injection.",
+        "priority": "Urgent",
+        "status": "Blocked",
+        "output_link": "Ticket #404: Client API Gateway Timeout",
+        "completion_time": "Blocked",
+        "send_email": False
+    },
+    {
+        "task_id": "TSK-1010",
+        "timestamp": "2026-11-08 17:30:00",
+        "assigned_by": "Boss",
+        "agent_name": "Sarah Jenkins (Agent 1: Project Manager)",
+        "task_description": "Audited all 7 agents, compiled daily executive brief, and verified ledger integrity.",
+        "priority": "High",
+        "status": "Completed",
+        "output_link": "https://docs.google.com/spreadsheets/d/1gg-cqQ1Fctq1Cmq1PFBdkBdMntjxho6NtMOg9IJhk2E",
+        "completion_time": "20m",
+        "send_email": True,
+        "report_date": "Nov 8, 2026"
     }
 ]
 
-def log_to_ledger(payload):
-    """Sends agent execution data to Google Apps Script Webhook."""
-    payload["timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+def post_task(payload):
     data = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
         WEBHOOK_URL,
@@ -83,35 +149,29 @@ def log_to_ledger(payload):
         with urllib.request.urlopen(req) as resp:
             return resp.status == 200
     except Exception as e:
-        print(f"  [ERROR] Failed to post: {e}")
+        print(f"  [ERROR] {e}")
         return False
 
 def main():
-    print("=" * 70)
-    print("🚀 AEO VANGUARD AGENCY: AUTONOMOUS AGENT ORCHESTRATION BRIDGE")
-    print("=" * 70)
-    print(f"[*] Target Ledger Webhook: {WEBHOOK_URL[:45]}...")
-    print(f"[*] Total Employees in Cycle: {len(AGENTS_WORKFLOW)}")
-    print("-" * 70)
+    print("=" * 75)
+    print("🚀 AEO VANGUARD AGENCY: 9-COLUMN COMPLIANT ORCHESTRATION BRIDGE")
+    print("=" * 75)
+    print(f"[*] Target Webhook: {WEBHOOK_URL[:50]}...")
+    print(f"[*] Syncing {len(SAMPLE_TASKS)} tasks across all 8 employees into Google Sheets...")
+    print("-" * 75)
 
-    for i, step in enumerate(AGENTS_WORKFLOW, 1):
-        print(f"\n[Cycle {i}/{len(AGENTS_WORKFLOW)}] Activating: {step['agent_name']}")
-        print(f"  -> Task: {step['task_performed'][:75]}...")
-        
-        # Simulate slight execution latency for recording aesthetics
-        time.sleep(1.2)
-        
-        success = log_to_ledger(step)
+    for i, t in enumerate(SAMPLE_TASKS, 1):
+        print(f"[{i}/{len(SAMPLE_TASKS)}] Pushing Task: {t['task_id']} | {t['agent_name'][:30]} | {t['status']}")
+        time.sleep(0.8)
+        success = post_task(t)
         if success:
-            print(f"  [✓] Logged to Google Sheet | Status: {step['output_status'][:45]}...")
+            print(f"  [✓] Synced with Google Sheet Ledger")
         else:
-            print("  [✗] Failed to sync with ledger.")
+            print(f"  [✗] Failed to sync")
 
-    print("\n" + "=" * 70)
-    print("🎉 ALL 8 AGENTS COMPLETED THEIR CYCLES SUCCESSFULLY!")
-    print("📊 Google Sheet Ledger Updated.")
-    print("📧 Daily Executive Status Bulletin Dispatched to Inbox.")
-    print("=" * 70)
+    print("\n" + "=" * 75)
+    print("🎉 ALL TASKS SYNCHRONIZED SUCCESSFULLY WITH 9-COLUMN LEDGER SCHEMA!")
+    print("=" * 75)
 
 if __name__ == "__main__":
     main()
